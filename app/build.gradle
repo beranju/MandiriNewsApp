@@ -5,14 +5,15 @@ plugins {
 
 android {
     namespace 'com.beranju.mandirinewsapp'
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.beranju.mandirinewsapp"
         minSdk 21
-        targetSdk 32
+        targetSdk 33
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -22,8 +23,8 @@ android {
 
     buildTypes {
         debug{
-            buildConfigField "String", "BASE_URL", "\'https://newsapi.org/v2/\'"
-            buildConfigField "String", "API_KEY", "\'065632db359c4f7f9ffd74105e77f66b\'"
+            buildConfigField "String", "BASE_URL", '"https://newsapi.org/v2/"'
+            buildConfigField "String", "API_KEY", '"065632db359c4f7f9ffd74105e77f66b"'
         }
         release {
             minifyEnabled false
@@ -67,7 +68,7 @@ dependencies {
 
     // ** retrofit dependencies
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
-    implementation "com.squareup.retrofit2:converter-json:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
     implementation "com.squareup.okhttp3:logging-interceptor:$logging_interceptor_version"
 
     // ** koin dependencies
