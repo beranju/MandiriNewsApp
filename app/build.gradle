@@ -75,4 +75,7 @@ dependencies {
     implementation "io.insert-koin:koin-core:$koin_version"
     implementation "io.insert-koin:koin-android:$koin_version"
     implementation "io.insert-koin:koin-androidx-compose:$koin_compose_version"
+
+    // ** coil for asyncimage
+    implementation "io.coil-kt:coil-compose:2.2.0"
 }

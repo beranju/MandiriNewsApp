@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">MandiriNewsApp</string>
+    <string name="text_semua_berita">Semua Berita</string>
+    <string name="text_unknown">Unknown</string>
 </resources>
