@@ -27,8 +27,8 @@ fun HeadlineNewsItem(
     Column(
         modifier = modifier
             .width(300.dp)
-            .padding(8.dp)
             .clip(RoundedCornerShape(8.dp))
+            .padding(8.dp)
     ) {
         AsyncImage(
             model = image,

@@ -8,6 +8,9 @@ import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.Query
 
+/**
+ * this interface use to define how to connect to api
+ */
 interface ApiService {
 
     @GET("top-headlines")

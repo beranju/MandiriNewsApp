@@ -11,6 +11,12 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 
+/**
+ * implementation of INewsRepository interface
+ *
+ * avoid use livedata from repository and recommend to use flow
+ * each function flow on dispatcher.io because they fetch data from api and may need more time
+ */
 class NewsRepository(
     private val apiService: ApiService
     ): INewsRepository {

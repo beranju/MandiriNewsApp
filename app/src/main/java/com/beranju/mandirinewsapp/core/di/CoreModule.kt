@@ -11,6 +11,12 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
+/**
+ * this variable is koin implementation in dependency injection
+ *
+ * single mean singleton or create once and use again when needed
+ *
+ */
 val networkModule = module {
     single {
         OkHttpClient.Builder()

@@ -6,6 +6,9 @@ import com.beranju.mandirinewsapp.domain.model.NewsModel
 import com.beranju.mandirinewsapp.domain.repository.INewsRepository
 import kotlinx.coroutines.flow.Flow
 
+/**
+ * implementation of interface newsusecase
+ */
 class NewsInteractor(private val newsRepository: INewsRepository): NewsUseCase {
     override fun fetchHeadlineNews(): Flow<Resource<List<NewsModel>>> = newsRepository.fetchHeadlineNews()
 

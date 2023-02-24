@@ -3,6 +3,10 @@ package com.beranju.mandirinewsapp.domain.model
 import com.beranju.mandirinewsapp.core.remote.response.Source
 import com.google.gson.annotations.SerializedName
 
+/**
+ * this class created to make data layer and view layer depend to domain layer
+ *
+ */
 data class NewsModel(
     val id: Int,
     val publishedAt: String? = null,
