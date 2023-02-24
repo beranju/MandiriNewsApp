@@ -13,6 +13,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.beranju.mandirinewsapp.R
 import com.beranju.mandirinewsapp.domain.model.NewsModel
 import com.beranju.mandirinewsapp.ui.common.UiState
@@ -42,7 +43,21 @@ fun HomeScreen(
                 }
             }
         }
-//        AllNewsSection()
+        viewModel.allNewsState.collectAsState(initial = UiState.Loading).value.let {
+            when(it){
+                is UiState.Loading -> {
+                    viewModel.fetchAllNews()
+                }
+                is UiState.Empty -> {}
+                is UiState.Error -> {}
+                is UiState.Success -> {
+                    AllNewsSection(
+                        itemNews = it.data
+                    )
+                }
+            }
+        }
+
 
     }
 
@@ -53,16 +68,24 @@ fun AllNewsSection(
     itemNews: List<NewsModel>,
     modifier: Modifier = Modifier,
 ) {
-    LazyColumn{
-        item{
-            Text(text = stringResource(R.string.text_semua_berita))
-        }
-        items(itemNews){news->
-            AllNewsItem(
-                image = news.urlToImage.toString(),
-                title = news.title ?: stringResource(R.string.text_unknown),
-                author = news.author ?: stringResource(R.string.text_unknown),
-                publishAt = news.publishedAt ?: stringResource(R.string.text_unknown))
+    Column(
+        modifier = modifier
+            .padding(16.dp)
+    ) {
+        Text(
+            text = stringResource(R.string.text_semua_berita),
+            fontSize = 18.sp,
+            modifier = Modifier
+                .padding(bottom = 16.dp)
+        )
+        LazyColumn{
+            items(itemNews){news->
+                AllNewsItem(
+                    image = news.urlToImage.toString(),
+                    title = news.title ?: stringResource(R.string.text_unknown),
+                    author = news.author ?: stringResource(R.string.text_unknown),
+                    publishAt = news.publishedAt ?: stringResource(R.string.text_unknown))
+            }
         }
     }
 
@@ -74,7 +97,10 @@ fun HeadLineSection(
     itemNews: List<NewsModel>,
     modifier: Modifier = Modifier
 ) {
-    LazyRow {
+    LazyRow(
+        modifier = modifier
+            .padding(start = 16.dp, top = 16.dp)
+    ) {
         items(itemNews){news->
             HeadlineNewsItem(
                 image = news.urlToImage.toString(),
