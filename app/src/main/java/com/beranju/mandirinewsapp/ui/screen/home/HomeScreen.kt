@@ -18,6 +18,11 @@ import com.beranju.mandirinewsapp.ui.common.UiState
 import com.beranju.mandirinewsapp.ui.component.*
 import org.koin.androidx.compose.koinViewModel
 
+/**
+ * infinite scrolling ref: https://dev.to/luismierez/infinite-lazycolumn-in-jetpack-compose-44a4
+ * horizontal list with indicator ref : https://google.github.io/accompanist/pager/
+ */
+
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
@@ -41,8 +46,12 @@ fun HomeScreen(
                         }
                     }
                 }
-                is UiState.Empty -> {}
-                is UiState.Error -> {}
+                is UiState.Empty -> {
+                    EmptyView()
+                }
+                is UiState.Error -> {
+
+                }
                 is UiState.Success -> {
                     HeadLineSection(
                         itemNews = it.data,
@@ -66,7 +75,9 @@ fun HomeScreen(
                         }
                     }
                 }
-                is UiState.Empty -> {}
+                is UiState.Empty -> {
+                    EmptyView()
+                }
                 is UiState.Error -> {}
                 is UiState.Success -> {
                     AllNewsSection(
