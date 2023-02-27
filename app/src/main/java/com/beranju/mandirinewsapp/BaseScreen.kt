@@ -1,9 +1,9 @@
 package com.beranju.mandirinewsapp
 
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -25,14 +25,7 @@ fun BaseScreen(
     Scaffold(
         modifier = modifier,
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = "Mandiri News",
-                        fontFamily = Fon
-                    )
-                }
-            )
+            TopBar()
         },
     ) { innerPadding ->
         /**
@@ -56,6 +49,26 @@ fun BaseScreen(
 
     }
     
+}
+
+@Composable
+fun TopBar(
+    modifier: Modifier = Modifier
+) {
+    TopAppBar(
+        title = {
+            Text(
+                text = "Mandiri News",
+                style = MaterialTheme.typography.h1
+            )
+        },
+        actions = {
+            IconButton(onClick = {}) {
+                Icon(imageVector = Icons.Default.Favorite, contentDescription = "Favorite")
+            }
+        },
+        modifier = modifier
+    )
 }
 
 @Preview(showBackground = true)

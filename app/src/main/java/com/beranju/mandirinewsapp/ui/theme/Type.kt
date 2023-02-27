@@ -8,7 +8,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.beranju.mandirinewsapp.R
 
-// ** init custom font family
+/**
+ * init custom font family
+ * ref => https://mjmanaog.medium.com/jetpack-compose-tips-how-to-change-font-738917e46f10
+ */
 val Poppins = FontFamily(
     Font(R.font.poppins_bold, FontWeight.Bold),
     Font(R.font.poppins_semibold, FontWeight.Medium),

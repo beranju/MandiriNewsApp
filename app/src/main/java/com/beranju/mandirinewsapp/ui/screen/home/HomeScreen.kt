@@ -1,8 +1,6 @@
 package com.beranju.mandirinewsapp.ui.screen.home
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -31,6 +29,8 @@ fun HomeScreen(
     Column(
         modifier = modifier.fillMaxSize()
     ) {
+        SearchComponent()
+        Spacer(modifier = Modifier.height(20.dp))
         viewModel.headlineState.collectAsState(initial = UiState.Loading).value.let {
             when(it){
                 is UiState.Loading -> {
