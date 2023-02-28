@@ -6,6 +6,8 @@ buildscript {
         koin_version = '3.3.3'
         koin_compose_version = '3.4.2'
         lottie_version = '6.0.0'
+        navigation_version = '2.5.2'
+        moshi_version = '1.14.0'
     }
 }// Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {

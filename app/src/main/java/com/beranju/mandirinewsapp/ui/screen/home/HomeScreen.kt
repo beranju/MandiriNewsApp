@@ -1,5 +1,7 @@
 package com.beranju.mandirinewsapp.ui.screen.home
 
+import android.os.Parcelable
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -10,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.beranju.mandirinewsapp.R
 import com.beranju.mandirinewsapp.domain.model.NewsModel
 import com.beranju.mandirinewsapp.ui.common.UiState
@@ -19,10 +22,15 @@ import org.koin.androidx.compose.koinViewModel
 /**
  * infinite scrolling ref: https://dev.to/luismierez/infinite-lazycolumn-in-jetpack-compose-44a4
  * horizontal list with indicator ref : https://google.github.io/accompanist/pager/
+ * animated list => https://medium.com/@andreclassen1337/create-android-compose-lazylist-scroll-effects-af5a423a53e6
+ * infinte auto scroll => https://medium.com/canopas/android-infinite-auto-scroll-with-jetpack-compose-ef8d573f8878
+ *
+ * paged list compose => https://medium.com/@manavtamboli/infinite-list-paged-list-in-jetpack-compose-b10fc7e74768
  */
 
 @Composable
 fun HomeScreen(
+    onClickItem: (NewsModel) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = koinViewModel()
 ) {
@@ -55,7 +63,7 @@ fun HomeScreen(
                 is UiState.Success -> {
                     HeadLineSection(
                         itemNews = it.data,
-                        isLoad = false
+                        onClickItem = onClickItem
                     )
                 }
             }
@@ -81,7 +89,8 @@ fun HomeScreen(
                 is UiState.Error -> {}
                 is UiState.Success -> {
                     AllNewsSection(
-                        itemNews = it.data
+                        itemNews = it.data,
+                        onClickItem = onClickItem
                     )
                 }
             }
@@ -95,6 +104,7 @@ fun HomeScreen(
 @Composable
 fun AllNewsSection(
     itemNews: List<NewsModel>,
+    onClickItem: (NewsModel) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -113,7 +123,12 @@ fun AllNewsSection(
                     image = news.urlToImage.toString(),
                     title = news.title ?: stringResource(R.string.text_unknown),
                     author = news.author ?: stringResource(R.string.text_unknown),
-                    publishAt = news.publishedAt ?: stringResource(R.string.text_unknown))
+                    publishAt = news.publishedAt ?: stringResource(R.string.text_unknown),
+                    modifier = Modifier.clickable {
+                        onClickItem(news)
+                    }
+                )
+
             }
         }
     }
@@ -123,7 +138,7 @@ fun AllNewsSection(
 @Composable
 fun HeadLineSection(
     itemNews: List<NewsModel>?,
-    isLoad: Boolean,
+    onClickItem: (NewsModel) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyRow(
@@ -135,7 +150,11 @@ fun HeadLineSection(
                 image = news.urlToImage.toString(),
                 title = news.title ?: stringResource(R.string.text_unknown),
                 sourceName = news.source?.name ?: stringResource(R.string.text_unknown),
-                publishAt = news.publishedAt ?: stringResource(R.string.text_unknown))
+                publishAt = news.publishedAt ?: stringResource(R.string.text_unknown),
+                modifier = Modifier.clickable {
+                    onClickItem.invoke(news)
+                }
+            )
         }
     }
 

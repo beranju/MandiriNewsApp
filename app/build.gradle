@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-parcelize'
 }
 
 android {
@@ -81,4 +82,7 @@ dependencies {
 
     // ** lottie animation
     implementation "com.airbnb.android:lottie-compose:$lottie_version"
+
+    // ** navigation component
+    implementation "androidx.navigation:navigation-compose:$navigation_version"
 }

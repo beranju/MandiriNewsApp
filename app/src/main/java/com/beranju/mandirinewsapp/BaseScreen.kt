@@ -1,5 +1,6 @@
 package com.beranju.mandirinewsapp
 
+import android.net.Uri
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -7,15 +8,23 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavArgument
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.beranju.mandirinewsapp.domain.model.NewsModel
 import com.beranju.mandirinewsapp.ui.navigation.Screens
 import com.beranju.mandirinewsapp.ui.screen.detail.DetailScreen
 import com.beranju.mandirinewsapp.ui.screen.home.HomeScreen
 import com.beranju.mandirinewsapp.ui.screen.save.FavoriteScreen
 import com.beranju.mandirinewsapp.ui.theme.MandiriNewsAppTheme
+import com.beranju.mandirinewsapp.utils.NewsModelType
+import com.google.gson.Gson
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 
 @Composable
 fun BaseScreen(
@@ -37,13 +46,27 @@ fun BaseScreen(
             modifier = Modifier.padding(innerPadding)
         ){
             composable(Screens.Home.route){
-                HomeScreen()
+                HomeScreen(
+                    onClickItem = {
+                        val dataJson = Uri.encode(Gson().toJson(it))
+                        navController.navigate(Screens.Detail.createRoute(dataJson))
+                    }
+                )
             }
             composable(Screens.Favorite.route){
                 FavoriteScreen()
             }
-            composable(Screens.Detail.route){
-                DetailScreen()
+            composable(
+                route = Screens.Detail.route,
+                arguments = listOf(
+                    navArgument("data"){
+                        // ** custom navtype for parcelable object
+                        type = NewsModelType()
+                    }
+                )
+            ){
+                val data = it.arguments?.getParcelable<NewsModel>("data")
+                DetailScreen(data = data!!)
             }
         }
 

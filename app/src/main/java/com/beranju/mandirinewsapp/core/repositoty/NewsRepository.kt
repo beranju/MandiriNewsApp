@@ -30,7 +30,6 @@ class NewsRepository(
                     val data = response.body()
                     if (data != null){
                         emit(Resource.Success(DataMapper.mapResponseToModel(data.articles)))
-                        Log.d("NewsRepository", "${data.articles}")
                     }else{
                         emit(Resource.Empty)
                     }
