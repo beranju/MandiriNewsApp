@@ -1,9 +1,6 @@
 package com.beranju.mandirinewsapp.domain.model
 
 import android.os.Parcelable
-import com.beranju.mandirinewsapp.core.remote.response.Source
-import com.google.gson.annotations.SerializedName
-import com.squareup.moshi.JsonClass
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
 

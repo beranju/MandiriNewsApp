@@ -8,9 +8,7 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavArgument
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -23,8 +21,6 @@ import com.beranju.mandirinewsapp.ui.screen.save.FavoriteScreen
 import com.beranju.mandirinewsapp.ui.theme.MandiriNewsAppTheme
 import com.beranju.mandirinewsapp.utils.NewsModelType
 import com.google.gson.Gson
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 
 @Composable
 fun BaseScreen(
