@@ -4,14 +4,6 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
 
-/**
- * this class created to make data layer and view layer depend to domain layer
- *
- * Json class is annotation of moshi library to help pass object in navigation component as jsonString
- *
- *
- */
-
 @Parcelize
 data class NewsModel(
     val id: Int,

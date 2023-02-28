@@ -1,5 +1,7 @@
 package com.beranju.mandirinewsapp.ui.component
 
+import androidx.compose.foundation.Image
+import com.beranju.mandirinewsapp.R
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
@@ -8,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -19,7 +22,7 @@ import com.beranju.mandirinewsapp.utils.convertDate
 @Composable
 fun HeadlineNewsItem(
     title: String,
-    image: String,
+    image: String?,
     sourceName: String,
     publishAt: String,
     modifier: Modifier = Modifier
@@ -30,15 +33,28 @@ fun HeadlineNewsItem(
             .clip(RoundedCornerShape(8.dp))
             .padding(8.dp)
     ) {
-        AsyncImage(
-            model = image,
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(160.dp)
-                .clip(RoundedCornerShape(8.dp))
-        )
+        if (image == null){
+            Image(
+                painter = painterResource(id = R.drawable.ic_happy_music),
+                contentDescription = "empty image",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(160.dp)
+                    .clip(RoundedCornerShape(8.dp))
+
+            )
+        }else{
+            AsyncImage(
+                model = image,
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(160.dp)
+                    .clip(RoundedCornerShape(8.dp))
+            )
+        }
         Text(
             text = title,
             overflow = TextOverflow.Ellipsis,
