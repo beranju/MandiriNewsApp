@@ -13,4 +13,6 @@ class NewsInteractor(private val newsRepository: INewsRepository): NewsUseCase {
     override fun fetchHeadlineNews(): Flow<Resource<List<NewsModel>>> = newsRepository.fetchHeadlineNews()
 
     override fun fetchEverythingNews(): Flow<Resource<List<NewsModel>>> = newsRepository.fetchEverythingNews()
+
+    override fun fetchNewsByQuery(query: String): Flow<Resource<List<NewsModel>>> = newsRepository.fetchNewsByQuery(query)
 }

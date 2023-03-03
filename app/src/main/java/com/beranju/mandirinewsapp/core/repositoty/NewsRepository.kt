@@ -60,4 +60,24 @@ class NewsRepository(
                 emit(Resource.Error(e.localizedMessage!!))
             }
         }.flowOn(Dispatchers.IO)
+
+    override fun fetchNewsByQuery(query: String): Flow<Resource<List<NewsModel>>> =
+        flow {
+            emit(Resource.Loading)
+            try {
+                val response = apiService.fetchNewsByQuery(pageSize = 15, page = 1, query = query)
+                if (response.isSuccessful){
+                    val data = response.body()
+                    if (data == null){
+                        emit(Resource.Empty)
+                    }else{
+                        emit(Resource.Success(DataMapper.mapResponseToModel(data!!.articles)))
+                    }
+                }else{
+                    emit(Resource.Error(response.message()))
+                }
+            }catch (e: Exception){
+                emit(Resource.Error(e.localizedMessage!!))
+            }
+        }.flowOn(Dispatchers.Default)
 }

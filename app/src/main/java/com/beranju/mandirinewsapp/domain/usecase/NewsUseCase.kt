@@ -10,4 +10,5 @@ import kotlinx.coroutines.flow.Flow
 interface NewsUseCase {
     fun fetchHeadlineNews(): Flow<Resource<List<NewsModel>>>
     fun fetchEverythingNews(): Flow<Resource<List<NewsModel>>>
+    fun fetchNewsByQuery(query: String): Flow<Resource<List<NewsModel>>>
 }
