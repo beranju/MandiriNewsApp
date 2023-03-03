@@ -52,7 +52,14 @@ fun BaseScreen(
                 FavoriteScreen()
             }
             composable(Screens.Search.route){
-                SearchScreen()
+                SearchScreen(
+                    onClickItem = {data ->
+                        val dataJson = Uri.encode(Gson().toJson(data))
+                        // ** add popbackstack, so if back we in home
+                        navController.popBackStack()
+                        navController.navigate(Screens.Detail.createRoute(dataJson))
+                    }
+                )
             }
             composable(
                 route = Screens.Detail.route,

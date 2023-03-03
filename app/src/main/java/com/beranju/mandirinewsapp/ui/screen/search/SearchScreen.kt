@@ -1,6 +1,7 @@
 package com.beranju.mandirinewsapp.ui.screen.search
 
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -16,6 +17,7 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun SearchScreen(
+    onClickItem: (NewsModel) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: SearchViewModel = koinViewModel()
 ) {
@@ -56,7 +58,10 @@ fun SearchScreen(
                     ErrorView()
                 }
                 is SearchState.Success -> {
-                    SearchContent(it.data)
+                    SearchContent(
+                        it.data,
+                        onClickItem = onClickItem
+                    )
                 }
             }
         }
@@ -66,6 +71,7 @@ fun SearchScreen(
 @Composable
 fun SearchContent(
     data: List<NewsModel>,
+    onClickItem: (NewsModel) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -76,7 +82,10 @@ fun SearchContent(
                 image = news.urlToImage.toString(),
                 title = news.title ?: stringResource(id = R.string.unknown),
                 author = news.author ?: stringResource(id = R.string.unknown),
-                publishAt = news.publishedAt ?: stringResource(id = R.string.unknown)
+                publishAt = news.publishedAt ?: stringResource(id = R.string.unknown),
+                modifier = modifier.clickable {
+                    onClickItem(news)
+                }
             )
         }
     }
