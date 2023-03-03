@@ -8,12 +8,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
-import com.airbnb.lottie.compose.LottieAnimation
-import com.airbnb.lottie.compose.LottieCompositionSpec
-import com.airbnb.lottie.compose.animateLottieCompositionAsState
-import com.airbnb.lottie.compose.rememberLottieComposition
+import androidx.compose.ui.unit.sp
+import com.airbnb.lottie.compose.*
 import com.beranju.mandirinewsapp.R
+import com.beranju.mandirinewsapp.ui.theme.Poppins
 
 @Composable
 fun EmptyView() {
@@ -23,11 +23,10 @@ fun EmptyView() {
      */
 
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.emptybox))
-    val progress by animateLottieCompositionAsState(composition = composition)
+    val progress by animateLottieCompositionAsState(composition = composition, iterations = LottieConstants.IterateForever)
     Column(
         modifier = Modifier
-            .fillMaxWidth()
-            .height(210.dp)
+            .fillMaxSize()
             .background(Color.White),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -35,6 +34,10 @@ fun EmptyView() {
         LottieAnimation(composition = composition, progress = progress)
         Text(
             text = "Oopss, nothing found!",
+            style = TextStyle(
+                fontFamily = Poppins,
+                fontSize = 16.sp
+            ),
             modifier = Modifier
                 .padding(top = 8.dp)
         )
