@@ -1,4 +1,7 @@
 package com.beranju.mandirinewsapp.ui.screen.search
 
-class SearchViewModel {
+import androidx.lifecycle.ViewModel
+
+class SearchViewModel: ViewModel() {
+
 }

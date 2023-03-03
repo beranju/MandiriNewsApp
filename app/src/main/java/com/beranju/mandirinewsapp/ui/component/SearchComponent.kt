@@ -23,7 +23,6 @@ fun SearchComponent(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp)
     ){
         OutlinedTextField(
             value = query,

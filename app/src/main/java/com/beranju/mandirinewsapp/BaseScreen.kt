@@ -18,6 +18,7 @@ import com.beranju.mandirinewsapp.ui.navigation.Screens
 import com.beranju.mandirinewsapp.ui.screen.detail.DetailScreen
 import com.beranju.mandirinewsapp.ui.screen.home.HomeScreen
 import com.beranju.mandirinewsapp.ui.screen.save.FavoriteScreen
+import com.beranju.mandirinewsapp.ui.screen.search.SearchScreen
 import com.beranju.mandirinewsapp.ui.theme.MandiriNewsAppTheme
 import com.beranju.mandirinewsapp.utils.NewsModelType
 import com.google.gson.Gson
@@ -43,11 +44,15 @@ fun BaseScreen(
                     onClickItem = {data ->
                         val dataJson = Uri.encode(Gson().toJson(data))
                         navController.navigate(Screens.Detail.createRoute(dataJson))
-                    }
+                    },
+                    goToSearch = { navController.navigate(Screens.Search.route) }
                 )
             }
             composable(Screens.Favorite.route){
                 FavoriteScreen()
+            }
+            composable(Screens.Search.route){
+                SearchScreen()
             }
             composable(
                 route = Screens.Detail.route,

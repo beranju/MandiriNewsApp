@@ -9,6 +9,7 @@ import com.beranju.mandirinewsapp.domain.model.NewsModel
 sealed class Screens(val route: String) {
     object Home: Screens("home")
     object Favorite: Screens("favorite")
+    object Search: Screens("search")
     object Detail: Screens("home/{data}"){
         fun createRoute(data: String) = "home/$data"
     }

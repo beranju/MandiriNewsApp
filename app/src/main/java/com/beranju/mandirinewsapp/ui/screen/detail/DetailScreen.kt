@@ -34,12 +34,15 @@ fun DetailScreen(
     navigateBack: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
-    Column {
+    Column(
+        modifier = modifier.fillMaxSize()
+            .padding(16.dp)
+    ) {
         DetailHeader(
             title = data.title.toString(),
             url = data.url.toString(),
             navigateBack = navigateBack)
-        Spacer(modifier = Modifier.height(10.dp))
+        Spacer(modifier = Modifier.height(25.dp))
         DetailContent(
             data.source?.name.toString(),
             data.title.toString(),
@@ -111,9 +114,7 @@ fun DetailContent(
     modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(16.dp)
+        modifier = modifier.fillMaxWidth()
     ) {
         Text(text = sourceName)
         Text(

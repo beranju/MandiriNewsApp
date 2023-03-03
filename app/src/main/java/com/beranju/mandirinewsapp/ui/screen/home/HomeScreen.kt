@@ -2,32 +2,32 @@ package com.beranju.mandirinewsapp.ui.screen.home
 
 import android.util.Log
 import android.widget.Toast
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.rounded.Favorite
+import androidx.compose.material.icons.rounded.Person
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.beranju.mandirinewsapp.R
 import com.beranju.mandirinewsapp.domain.model.NewsModel
 import com.beranju.mandirinewsapp.ui.common.UiState
 import com.beranju.mandirinewsapp.ui.component.*
+import com.beranju.mandirinewsapp.ui.theme.Poppins
 import org.koin.androidx.compose.koinViewModel
 
 /**
@@ -42,13 +42,16 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun HomeScreen(
     onClickItem: (NewsModel) -> Unit,
+    goToSearch: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = koinViewModel()
 ) {
     Column(
-        modifier = modifier.fillMaxSize()
+        modifier = modifier
+            .fillMaxWidth()
+            .verticalScroll(rememberScrollState())
     ) {
-        HeaderHome()
+        HeaderHome(goToSearch = goToSearch)
         Spacer(modifier = Modifier.height(20.dp))
         viewModel.headlineState.collectAsState(initial = UiState.Loading).value.let {
             when(it){
@@ -56,6 +59,7 @@ fun HomeScreen(
                     viewModel.fetchHeadlineNews()
                     LazyRow(
                         modifier = modifier
+                            .height(260.dp)
                             .padding(start = 16.dp, top = 16.dp)
                     ){
                         repeat(2){
@@ -85,6 +89,7 @@ fun HomeScreen(
                     viewModel.fetchAllNews()
                     LazyColumn (
                         modifier = modifier
+                            .height(500.dp)
                             .padding(16.dp)
                     ){
                         repeat(4){
@@ -101,7 +106,7 @@ fun HomeScreen(
                 is UiState.Success -> {
                     AllNewsSection(
                         itemNews = it.data,
-                        onClickItem = onClickItem
+                        onClickItem = onClickItem,
                     )
                 }
             }
@@ -114,12 +119,38 @@ fun HomeScreen(
 
 @Composable
 fun HeaderHome(
+    goToSearch: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Box(
-        modifier = modifier.fillMaxWidth()
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 16.dp)
+            .clickable {
+                goToSearch()
+            }
     ){
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(
+                text = "Hello Beranju ",
+                style = TextStyle(
+                    fontFamily = Poppins,
+                    fontSize = 16.sp
+                )
+            )
+            IconButton(onClick = {}) {
+                Icon(
+                    imageVector = Icons.Rounded.Favorite, 
+                    contentDescription = null,
+                    tint = Color.Red
+                )
+            }
+        }
+        Spacer(modifier = Modifier.height(10.dp))
         OutlinedTextField(
             value = "",
             enabled = false,
@@ -146,6 +177,7 @@ fun AllNewsSection(
 ) {
     Column(
         modifier = modifier
+            .height(500.dp)
             .padding(16.dp)
     ) {
         Text(
@@ -180,6 +212,7 @@ fun HeadLineSection(
 ) {
     LazyRow(
         modifier = modifier
+            .height(260.dp)
             .padding(start = 16.dp, top = 16.dp)
     ) {
         items(itemNews!!){news->

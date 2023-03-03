@@ -29,4 +29,12 @@ interface ApiService {
         @Query("domains") domains: String = "foxnews.com,cnbc.com,abcnews.go.com,bbc.com,bloomberg.com,cnn.com,techcrunch.com,thenextweb.com",
         @Query("sortBy") sortBy: String = "popularity",
     ): Response<EverythingResponse>
+
+    @GET("everything")
+    @Headers("Authorization: apiKey ${BuildConfig.API_KEY}")
+    suspend fun fetchNewsByQuery(
+        @Query("pageSize") pageSize: Int,
+        @Query("page") page: Int,
+        @Query("q") query: String,
+    ): Response<EverythingResponse>
 }
