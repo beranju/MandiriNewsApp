@@ -16,7 +16,7 @@ import com.beranju.mandirinewsapp.ui.theme.MandiriNewsAppTheme
 
 @Composable
 fun SearchComponent(
-    query: String? = null,
+    query: String,
     onChangeValue: (String) -> Unit = {},
     modifier: Modifier = Modifier
 ){
@@ -26,10 +26,10 @@ fun SearchComponent(
             .padding(horizontal = 16.dp)
     ){
         OutlinedTextField(
-            value = query.toString(),
+            value = query,
             onValueChange = onChangeValue,
-            label = {
-                Text(text = "Find News")
+            placeholder = {
+                          Text(text = "Find News around the world")
             },
             maxLines = 1,
             textStyle = MaterialTheme.typography.body1,
@@ -46,7 +46,7 @@ fun SearchComponent(
 @Composable
 fun SearchComponentPreview() {
     MandiriNewsAppTheme {
-        SearchComponent()
+        SearchComponent("buku")
     }
 
 }

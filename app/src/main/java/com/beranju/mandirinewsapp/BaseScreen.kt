@@ -29,9 +29,6 @@ fun BaseScreen(
 ) {
     Scaffold(
         modifier = modifier,
-        topBar = {
-            TopBar()
-        },
     ) { innerPadding ->
         /**
          * referensi => https://developer.android.com/jetpack/compose/navigation?hl=id
@@ -43,8 +40,8 @@ fun BaseScreen(
         ){
             composable(Screens.Home.route){
                 HomeScreen(
-                    onClickItem = {
-                        val dataJson = Uri.encode(Gson().toJson(it))
+                    onClickItem = {data ->
+                        val dataJson = Uri.encode(Gson().toJson(data))
                         navController.navigate(Screens.Detail.createRoute(dataJson))
                     }
                 )
@@ -61,8 +58,13 @@ fun BaseScreen(
                     }
                 )
             ){
-                val data = it.arguments?.getParcelable<NewsModel>("data")
-                DetailScreen(data = data!!)
+                val data = it.arguments?.getParcelable<NewsModel>("data") ?: NewsModel(1)
+                DetailScreen(
+                    data = data,
+                    navigateBack = {
+                        navController.navigateUp()
+                    }
+                )
             }
         }
 
@@ -70,25 +72,6 @@ fun BaseScreen(
     
 }
 
-@Composable
-fun TopBar(
-    modifier: Modifier = Modifier
-) {
-    TopAppBar(
-        title = {
-            Text(
-                text = "Mandiri News",
-                style = MaterialTheme.typography.h1
-            )
-        },
-        actions = {
-            IconButton(onClick = {}) {
-                Icon(imageVector = Icons.Default.Favorite, contentDescription = "Favorite")
-            }
-        },
-        modifier = modifier
-    )
-}
 
 @Preview(showBackground = true)
 @Composable

@@ -1,5 +1,6 @@
 package com.beranju.mandirinewsapp.ui.component
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
@@ -13,6 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.beranju.mandirinewsapp.domain.model.NewsModel
 import com.beranju.mandirinewsapp.ui.theme.MandiriNewsAppTheme
 import com.beranju.mandirinewsapp.utils.convertDate
 
@@ -22,6 +24,7 @@ fun AllNewsItem(
     title: String,
     author: String,
     publishAt: String,
+    onClickItem : (NewsModel) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     Row(

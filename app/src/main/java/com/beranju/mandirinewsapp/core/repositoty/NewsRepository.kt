@@ -52,7 +52,6 @@ class NewsRepository(
                         emit(Resource.Empty)
                     }else{
                         emit(Resource.Success(DataMapper.mapResponseToModel(data.articles)))
-                        Log.d("NewsRepository", "${data.articles}")
                     }
                 }else{
                     emit(Resource.Error(response.message()))

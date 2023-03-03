@@ -1,14 +1,26 @@
 package com.beranju.mandirinewsapp.ui.screen.home
 
+import android.util.Log
+import android.widget.Toast
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -36,7 +48,7 @@ fun HomeScreen(
     Column(
         modifier = modifier.fillMaxSize()
     ) {
-        SearchComponent()
+        HeaderHome()
         Spacer(modifier = Modifier.height(20.dp))
         viewModel.headlineState.collectAsState(initial = UiState.Loading).value.let {
             when(it){
@@ -98,6 +110,32 @@ fun HomeScreen(
 
     }
 
+}
+
+@Composable
+fun HeaderHome(
+    modifier: Modifier = Modifier
+) {
+    Box(
+        modifier = modifier.fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 16.dp)
+    ){
+        OutlinedTextField(
+            value = "",
+            enabled = false,
+            onValueChange = {},
+            placeholder = {
+                Text(text = "Find News around the world")
+            },
+            maxLines = 1,
+            textStyle = MaterialTheme.typography.body1,
+            shape = RoundedCornerShape(16.dp),
+            leadingIcon = {
+                Icon(imageVector = Icons.Default.Search, contentDescription = null)
+            },
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
 }
 
 @Composable

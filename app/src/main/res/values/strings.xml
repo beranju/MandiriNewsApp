@@ -2,4 +2,6 @@
     <string name="app_name">MandiriNewsApp</string>
     <string name="text_semua_berita">Semua Berita</string>
     <string name="text_unknown">Unknown</string>
+    <string name="empty_news_description">Klik read more untuk membaca selengkapnya</string>
+    <string name="unknown">UnKnown</string>
 </resources>
