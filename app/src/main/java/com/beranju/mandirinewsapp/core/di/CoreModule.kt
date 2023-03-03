@@ -1,11 +1,14 @@
 package com.beranju.mandirinewsapp.core.di
 
+import androidx.room.Room
 import com.beranju.mandirinewsapp.BuildConfig
+import com.beranju.mandirinewsapp.core.local.room.NewsDatabase
 import com.beranju.mandirinewsapp.core.remote.retrofit.ApiService
 import com.beranju.mandirinewsapp.core.repositoty.NewsRepository
 import com.beranju.mandirinewsapp.domain.repository.INewsRepository
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -17,6 +20,20 @@ import java.util.concurrent.TimeUnit
  * single mean singleton or create once and use again when needed
  *
  */
+
+val databaseModule = module {
+    factory { get<NewsDatabase>().newsDao() }
+    single {
+        Room.databaseBuilder(
+            androidContext(),
+            NewsDatabase::class.java,
+            "newsdb"
+        )
+            .fallbackToDestructiveMigration()
+            .build()
+    }
+}
+
 val networkModule = module {
     single {
         OkHttpClient.Builder()
@@ -38,5 +55,5 @@ val networkModule = module {
 }
 
 val repositoryModule = module {
-    single <INewsRepository> { NewsRepository(get()) }
+    single <INewsRepository> { NewsRepository(get(), get()) }
 }

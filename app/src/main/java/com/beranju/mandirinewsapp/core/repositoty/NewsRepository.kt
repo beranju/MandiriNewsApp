@@ -1,6 +1,7 @@
 package com.beranju.mandirinewsapp.core.repositoty
 
 import android.util.Log
+import com.beranju.mandirinewsapp.core.local.room.NewsDao
 import com.beranju.mandirinewsapp.core.remote.retrofit.ApiService
 import com.beranju.mandirinewsapp.domain.common.Resource
 import com.beranju.mandirinewsapp.domain.model.NewsModel
@@ -18,7 +19,8 @@ import kotlinx.coroutines.flow.flowOn
  * each function flow on dispatcher.io because they fetch data from api and may need more time
  */
 class NewsRepository(
-    private val apiService: ApiService
+    private val apiService: ApiService,
+    private val newsDao: NewsDao
     ): INewsRepository {
 
     override fun fetchHeadlineNews(): Flow<Resource<List<NewsModel>>> =

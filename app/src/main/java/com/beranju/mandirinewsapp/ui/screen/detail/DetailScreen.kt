@@ -1,5 +1,6 @@
 package com.beranju.mandirinewsapp.ui.screen.detail
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.Image
@@ -19,13 +20,16 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.beranju.mandirinewsapp.R
 import com.beranju.mandirinewsapp.domain.model.NewsModel
 import com.beranju.mandirinewsapp.ui.theme.MandiriNewsAppTheme
+import com.beranju.mandirinewsapp.ui.theme.Poppins
 import com.beranju.mandirinewsapp.utils.convertDate
 
 @Composable
@@ -35,13 +39,15 @@ fun DetailScreen(
     modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = modifier.fillMaxSize()
+        modifier = modifier
+            .fillMaxSize()
             .padding(16.dp)
     ) {
         DetailHeader(
             title = data.title.toString(),
             url = data.url.toString(),
-            navigateBack = navigateBack)
+            navigateBack = navigateBack
+        )
         Spacer(modifier = Modifier.height(25.dp))
         DetailContent(
             data.source?.name.toString(),
@@ -49,7 +55,8 @@ fun DetailScreen(
             data.author ?: stringResource(R.string.unknown),
             data.publishedAt?.convertDate().toString(),
             data.urlToImage.toString(),
-            data.description ?: stringResource(R.string.empty_news_description)
+            data.description ?: stringResource(R.string.empty_news_description),
+            data.url.toString()
         )
     }
 }
@@ -66,23 +73,21 @@ fun DetailHeader(
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = modifier.fillMaxWidth()
     ) {
-        OutlinedButton(
+        IconButton(
             onClick = {
-                      navigateBack()
-            },
-            shape = CircleShape
+                navigateBack()
+            }
         ) {
             Icon(imageVector = Icons.Default.ArrowBack, contentDescription = null)
         }
         Row {
-            OutlinedButton(
-                onClick = {},
-                shape = CircleShape
+            IconButton(
+                onClick = {}
             ) {
                 Icon(imageVector = Icons.Default.Favorite, contentDescription = null)
             }
             Spacer(modifier = Modifier.width(10.dp))
-            OutlinedButton(
+            IconButton(
                 onClick = {
                     val intent = Intent().apply {
                         action = Intent.ACTION_SEND
@@ -92,8 +97,7 @@ fun DetailHeader(
                     }
                     val shareNews = Intent.createChooser(intent, null)
                     context.startActivity(shareNews)
-                },
-                shape = CircleShape
+                }
             ) {
                 Icon(imageVector = Icons.Default.Share, contentDescription = null)
             }
@@ -111,6 +115,8 @@ fun DetailContent(
     publishAt: String,
     imageUrl: String,
     content: String,
+    url: String,
+    context: Context = LocalContext.current,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -136,9 +142,12 @@ fun DetailContent(
 
         }
         Spacer(modifier = Modifier.height(10.dp))
-        if (imageUrl == "null"){
-            Image(painter = painterResource(id = R.drawable.ic_happy_music), contentDescription = null)
-        }else{
+        if (imageUrl == "null") {
+            Image(
+                painter = painterResource(id = R.drawable.ic_happy_music),
+                contentDescription = null
+            )
+        } else {
             AsyncImage(
                 model = imageUrl,
                 contentDescription = "thumbnail",
@@ -150,11 +159,19 @@ fun DetailContent(
         }
         Spacer(modifier = Modifier.height(20.dp))
         Text(
-            text = content
+            text = content,
+            style = TextStyle(
+                fontFamily = Poppins,
+                fontSize = 14.sp
+            )
         )
         Spacer(modifier = Modifier.height(20.dp))
         Button(
-            onClick = {} ,
+            onClick = {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                context.startActivity(intent)
+
+            },
             modifier = Modifier.align(Alignment.End)
         ) {
             Text(text = "Read More")

@@ -2,9 +2,7 @@ package com.beranju.mandirinewsapp
 
 import android.net.Uri
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,7 +24,7 @@ import com.google.gson.Gson
 @Composable
 fun BaseScreen(
     modifier: Modifier = Modifier,
-    navController:NavHostController = rememberNavController(),
+    navController: NavHostController = rememberNavController(),
 ) {
     Scaffold(
         modifier = modifier,
@@ -38,22 +36,22 @@ fun BaseScreen(
             navController = navController,
             startDestination = Screens.Home.route,
             modifier = Modifier.padding(innerPadding)
-        ){
-            composable(Screens.Home.route){
+        ) {
+            composable(Screens.Home.route) {
                 HomeScreen(
-                    onClickItem = {data ->
+                    onClickItem = { data ->
                         val dataJson = Uri.encode(Gson().toJson(data))
                         navController.navigate(Screens.Detail.createRoute(dataJson))
                     },
                     goToSearch = { navController.navigate(Screens.Search.route) }
                 )
             }
-            composable(Screens.Favorite.route){
+            composable(Screens.Favorite.route) {
                 FavoriteScreen()
             }
-            composable(Screens.Search.route){
+            composable(Screens.Search.route) {
                 SearchScreen(
-                    onClickItem = {data ->
+                    onClickItem = { data ->
                         val dataJson = Uri.encode(Gson().toJson(data))
                         // ** add popbackstack, so if back we in home
                         navController.popBackStack()
@@ -64,12 +62,12 @@ fun BaseScreen(
             composable(
                 route = Screens.Detail.route,
                 arguments = listOf(
-                    navArgument("data"){
+                    navArgument("data") {
                         // ** custom navtype for parcelable object
                         type = NewsModelType()
                     }
                 )
-            ){
+            ) {
                 val data = it.arguments?.getParcelable<NewsModel>("data") ?: NewsModel(1)
                 DetailScreen(
                     data = data,
@@ -81,7 +79,7 @@ fun BaseScreen(
         }
 
     }
-    
+
 }
 
 
@@ -91,5 +89,5 @@ fun BaseScreenPreview() {
     MandiriNewsAppTheme {
         BaseScreen()
     }
-    
+
 }

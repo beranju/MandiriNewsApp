@@ -8,6 +8,7 @@ buildscript {
         lottie_version = '6.0.0'
         navigation_version = '2.5.2'
         moshi_version = '1.14.0'
+        room_version = '2.5.0'
     }
 }// Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
