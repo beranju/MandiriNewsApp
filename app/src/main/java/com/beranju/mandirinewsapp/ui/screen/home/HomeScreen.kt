@@ -21,6 +21,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.paging.LoadState
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.items
 import com.beranju.mandirinewsapp.R
 import com.beranju.mandirinewsapp.domain.model.NewsModel
 import com.beranju.mandirinewsapp.ui.common.UiState
@@ -44,6 +48,7 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = koinViewModel()
 ) {
+    val dataAllNews = viewModel.allNews.collectAsLazyPagingItems()
     Scaffold(
         topBar = { HeaderHome(goToSearch) },
     ) { innerPadding ->
@@ -83,35 +88,7 @@ fun HomeScreen(
                     }
                 }
             }
-            viewModel.allNewsState.collectAsState(initial = UiState.Loading).value.let {
-                when (it) {
-                    is UiState.Loading -> {
-                        viewModel.fetchAllNews()
-                        LazyColumn(
-                            modifier = modifier
-                                .height(400.dp)
-                                .padding(16.dp)
-                        ) {
-                            repeat(4) {
-                                item {
-                                    AllNewsShimmerAnimation()
-                                }
-                            }
-                        }
-                    }
-                    is UiState.Empty -> {
-                        EmptyView()
-                    }
-                    is UiState.Error -> {}
-                    is UiState.Success -> {
-                        AllNewsSection(
-                            itemNews = it.data,
-                            onClickItem = onClickItem,
-                        )
-                    }
-                }
-            }
-
+            AllNewsSection(itemNews = dataAllNews, onClickItem = onClickItem)
 
         }
 
@@ -174,7 +151,7 @@ fun HeaderHome(
 
 @Composable
 fun AllNewsSection(
-    itemNews: List<NewsModel>,
+    itemNews: LazyPagingItems<NewsModel>,
     onClickItem: (NewsModel) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -191,18 +168,53 @@ fun AllNewsSection(
         )
         LazyColumn {
             items(itemNews) { news ->
-                AllNewsItem(
-                    image = news.urlToImage.toString(),
-                    title = news.title ?: stringResource(R.string.text_unknown),
-                    author = news.author ?: stringResource(R.string.text_unknown),
-                    publishAt = news.publishedAt ?: stringResource(R.string.text_unknown),
-                    modifier = Modifier.clickable {
-                        onClickItem(news)
-                    }
-                )
+                if (news != null) {
+                    AllNewsItem(
+                        image = news.urlToImage.toString(),
+                        title = news.title ?: stringResource(R.string.text_unknown),
+                        author = news.author ?: stringResource(R.string.text_unknown),
+                        publishAt = news.publishedAt ?: stringResource(R.string.text_unknown),
+                        modifier = Modifier.clickable {
+                            onClickItem(news)
+                        }
+                    )
+                }
+            }
+            itemNews.apply {
+                // ** ref : https://medium.com/simform-engineering/list-view-with-pagination-using-jetpack-compose-e131174eac8e
+                when {
+                    loadState.refresh is LoadState.Loading -> {
+                        // ** manage load state when first time
+                            repeat(4) {
+                                items(it) {
+                                    AllNewsShimmerAnimation()
+                                }
+                            }
 
+                    }
+                    loadState.append is LoadState.Loading -> {
+                        // ** manage load state when next page load
+                        item {
+                            AllNewsShimmerAnimation()
+                        }
+
+                    }
+                    loadState.append is LoadState.Error -> {
+                        // ** manage load state when error
+                        item{
+                            ErrorView()
+                        }
+                    }
+                    loadState.refresh is LoadState.Error -> {
+                        item{
+                            ErrorView()
+                        }
+                    }
+
+                }
             }
         }
+
     }
 
 }

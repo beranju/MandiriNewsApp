@@ -1,5 +1,6 @@
 package com.beranju.mandirinewsapp.domain.usecase
 
+import androidx.paging.PagingData
 import com.beranju.mandirinewsapp.domain.common.Resource
 import com.beranju.mandirinewsapp.domain.model.NewsModel
 import kotlinx.coroutines.flow.Flow
@@ -9,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
  */
 interface NewsUseCase {
     fun fetchHeadlineNews(): Flow<Resource<List<NewsModel>>>
-    fun fetchEverythingNews(): Flow<Resource<List<NewsModel>>>
+    fun fetchEverythingNews(): Flow<PagingData<NewsModel>>
     fun fetchNewsByQuery(query: String): Flow<Resource<List<NewsModel>>>
     fun getAllFavoriteNews(): Flow<List<NewsModel>>
     suspend fun setFavoriteNews(newsModel: NewsModel, state: Boolean)
