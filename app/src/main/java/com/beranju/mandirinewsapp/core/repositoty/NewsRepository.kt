@@ -1,6 +1,8 @@
 package com.beranju.mandirinewsapp.core.repositoty
 
+import android.provider.ContactsContract.Data
 import android.util.Log
+import com.beranju.mandirinewsapp.core.local.entity.NewsEntity
 import com.beranju.mandirinewsapp.core.local.room.NewsDao
 import com.beranju.mandirinewsapp.core.remote.retrofit.ApiService
 import com.beranju.mandirinewsapp.domain.common.Resource
@@ -83,4 +85,22 @@ class NewsRepository(
                 emit(Resource.Error(e.localizedMessage!!))
             }
         }.flowOn(Dispatchers.Default)
+
+    override fun getAllFavoriteNews(): Flow<List<NewsModel>> =
+        flow {
+            newsDao.getAllNews().collect{
+                val data = DataMapper.entityToModel(it)
+                emit(data)
+            }
+        }
+
+    override suspend fun setFavoriteNews(news: NewsModel, state: Boolean) {
+        if (state){
+            newsDao.insertNews(DataMapper.modelToEntity(news))
+        }else{
+            newsDao.deleteNews(DataMapper.modelToEntity(news))
+        }
+    }
+
+    override suspend fun isFavorite(publishedAt: String): Boolean = newsDao.isNewsExists(publishedAt)
 }

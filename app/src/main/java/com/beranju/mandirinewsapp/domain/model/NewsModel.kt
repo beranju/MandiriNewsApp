@@ -6,8 +6,7 @@ import kotlinx.parcelize.RawValue
 
 @Parcelize
 data class NewsModel(
-    val id: Int,
-    val publishedAt: String? = null,
+    val publishedAt: String,
     val author: String? = null,
     val urlToImage: String? = null,
     val description: String? = null,

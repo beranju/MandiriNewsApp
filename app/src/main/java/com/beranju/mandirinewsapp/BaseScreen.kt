@@ -14,12 +14,14 @@ import androidx.navigation.navArgument
 import com.beranju.mandirinewsapp.domain.model.NewsModel
 import com.beranju.mandirinewsapp.ui.navigation.Screens
 import com.beranju.mandirinewsapp.ui.screen.detail.DetailScreen
+import com.beranju.mandirinewsapp.ui.screen.detail.DetailViewModel
 import com.beranju.mandirinewsapp.ui.screen.home.HomeScreen
 import com.beranju.mandirinewsapp.ui.screen.save.FavoriteScreen
 import com.beranju.mandirinewsapp.ui.screen.search.SearchScreen
 import com.beranju.mandirinewsapp.ui.theme.MandiriNewsAppTheme
 import com.beranju.mandirinewsapp.utils.NewsModelType
 import com.google.gson.Gson
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun BaseScreen(
@@ -68,12 +70,12 @@ fun BaseScreen(
                     }
                 )
             ) {
-                val data = it.arguments?.getParcelable<NewsModel>("data") ?: NewsModel(1)
+                val data = it.arguments?.getParcelable<NewsModel>("data") ?: NewsModel("")
                 DetailScreen(
                     data = data,
                     navigateBack = {
                         navController.navigateUp()
-                    }
+                    },
                 )
             }
         }

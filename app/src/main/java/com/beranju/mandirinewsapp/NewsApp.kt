@@ -1,6 +1,7 @@
 package com.beranju.mandirinewsapp
 
 import android.app.Application
+import com.beranju.mandirinewsapp.core.di.databaseModule
 import com.beranju.mandirinewsapp.core.di.networkModule
 import com.beranju.mandirinewsapp.core.di.repositoryModule
 import com.beranju.mandirinewsapp.di.newsUseCaseModule
@@ -21,7 +22,8 @@ class NewsApp: Application() {
                     networkModule,
                     repositoryModule,
                     newsUseCaseModule,
-                    viewModelModule
+                    viewModelModule,
+                    databaseModule,
                 )
             )
         }

@@ -9,8 +9,8 @@ interface NewsDao {
     @Query("SELECT * FROM news")
     fun getAllNews(): Flow<List<NewsEntity>>
 
-    @Query("SELECT EXISTS(SELECT * FROM news WHERE id = :id)")
-    suspend fun isNewsExists(id: Int): Boolean
+    @Query("SELECT EXISTS(SELECT * FROM news WHERE publishedAt = :publishedAt)")
+    suspend fun isNewsExists(publishedAt: String): Boolean
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertNews(newsEntity: NewsEntity)

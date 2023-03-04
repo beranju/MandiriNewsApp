@@ -3,21 +3,21 @@ package com.beranju.mandirinewsapp.ui.screen.detail
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Share
-import androidx.compose.runtime.Composable
+import androidx.compose.material.icons.filled.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -25,19 +25,29 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 import coil.compose.AsyncImage
 import com.beranju.mandirinewsapp.R
 import com.beranju.mandirinewsapp.domain.model.NewsModel
 import com.beranju.mandirinewsapp.ui.theme.MandiriNewsAppTheme
 import com.beranju.mandirinewsapp.ui.theme.Poppins
 import com.beranju.mandirinewsapp.utils.convertDate
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun DetailScreen(
     data: NewsModel,
     navigateBack: () -> Unit = {},
+    viewModel: DetailViewModel = koinViewModel(),
     modifier: Modifier = Modifier
 ) {
+    LaunchedEffect(Unit){
+        viewModel.isFavoriteNews(data.publishedAt)
+    }
+//    viewModel.isFavoriteNews(data.id)
+    val state = viewModel.uiState.collectAsState(initial = false)
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -46,14 +56,22 @@ fun DetailScreen(
         DetailHeader(
             title = data.title.toString(),
             url = data.url.toString(),
-            navigateBack = navigateBack
+            isFavorite = state.value,
+            navigateBack = navigateBack,
+            onFavoriteClick = {
+                if (state.value){
+                    viewModel.setFavoriteNews(news = data, false)
+                }else{
+                    viewModel.setFavoriteNews(news = data, true)
+                }
+            }
         )
         Spacer(modifier = Modifier.height(25.dp))
         DetailContent(
             data.source?.name.toString(),
             data.title.toString(),
             data.author ?: stringResource(R.string.unknown),
-            data.publishedAt?.convertDate().toString(),
+            data.publishedAt.convertDate().toString(),
             data.urlToImage.toString(),
             data.description ?: stringResource(R.string.empty_news_description),
             data.url.toString()
@@ -65,7 +83,9 @@ fun DetailScreen(
 fun DetailHeader(
     title: String,
     url: String,
+    isFavorite: Boolean,
     navigateBack: () -> Unit,
+    onFavoriteClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
@@ -82,9 +102,15 @@ fun DetailHeader(
         }
         Row {
             IconButton(
-                onClick = {}
+                onClick = {
+                    onFavoriteClick()
+                }
             ) {
-                Icon(imageVector = Icons.Default.Favorite, contentDescription = null)
+                Icon(
+                    imageVector = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                    contentDescription = null,
+                    tint = if (isFavorite) Color.Red else Color.Black
+                )
             }
             Spacer(modifier = Modifier.width(10.dp))
             IconButton(
@@ -185,7 +211,7 @@ fun DetailContent(
 @Composable
 fun DetailScreenPreview() {
     MandiriNewsAppTheme {
-        DetailScreen(NewsModel(1))
+        DetailScreen(NewsModel(""))
     }
 
 }
