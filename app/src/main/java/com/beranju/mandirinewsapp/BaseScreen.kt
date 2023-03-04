@@ -19,6 +19,7 @@ import com.beranju.mandirinewsapp.ui.screen.home.HomeScreen
 import com.beranju.mandirinewsapp.ui.screen.save.FavoriteScreen
 import com.beranju.mandirinewsapp.ui.screen.search.SearchScreen
 import com.beranju.mandirinewsapp.ui.theme.MandiriNewsAppTheme
+import com.beranju.mandirinewsapp.ui.theme.contentColor
 import com.beranju.mandirinewsapp.utils.NewsModelType
 import com.google.gson.Gson
 import org.koin.androidx.compose.koinViewModel

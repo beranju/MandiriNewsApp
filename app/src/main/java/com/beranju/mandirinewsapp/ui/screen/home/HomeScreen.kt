@@ -1,23 +1,21 @@
 package com.beranju.mandirinewsapp.ui.screen.home
 
-import android.util.Log
-import android.widget.Toast
-import androidx.compose.foundation.*
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.rounded.Favorite
-import androidx.compose.material.icons.rounded.Person
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -46,74 +44,79 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = koinViewModel()
 ) {
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .verticalScroll(rememberScrollState())
-    ) {
-        HeaderHome(goToSearch = goToSearch)
-        Spacer(modifier = Modifier.height(20.dp))
-        viewModel.headlineState.collectAsState(initial = UiState.Loading).value.let {
-            when(it){
-                is UiState.Loading -> {
-                    viewModel.fetchHeadlineNews()
-                    LazyRow(
-                        modifier = modifier
-                            .height(260.dp)
-                            .padding(start = 16.dp, top = 16.dp)
-                    ){
-                        repeat(2){
-                            item{
-                                HeadlineShimmerAnimation()
+    Scaffold(
+        topBar = { HeaderHome(goToSearch) },
+    ) { innerPadding ->
+        Column(
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(innerPadding)
+                .verticalScroll(rememberScrollState())
+        ) {
+            viewModel.headlineState.collectAsState(initial = UiState.Loading).value.let {
+                when (it) {
+                    is UiState.Loading -> {
+                        viewModel.fetchHeadlineNews()
+                        LazyRow(
+                            modifier = modifier
+                                .height(300.dp)
+                                .padding(start = 16.dp, top = 16.dp)
+                        ) {
+                            repeat(2) {
+                                item {
+                                    HeadlineShimmerAnimation()
+                                }
                             }
                         }
                     }
-                }
-                is UiState.Empty -> {
-                    EmptyView()
-                }
-                is UiState.Error -> {
+                    is UiState.Empty -> {
+                        EmptyView()
+                    }
+                    is UiState.Error -> {
 
-                }
-                is UiState.Success -> {
-                    HeadLineSection(
-                        itemNews = it.data,
-                        onClickItem = onClickItem
-                    )
+                    }
+                    is UiState.Success -> {
+                        HeadLineSection(
+                            itemNews = it.data,
+                            onClickItem = onClickItem
+                        )
+                    }
                 }
             }
-        }
-        viewModel.allNewsState.collectAsState(initial = UiState.Loading).value.let {
-            when(it){
-                is UiState.Loading -> {
-                    viewModel.fetchAllNews()
-                    LazyColumn (
-                        modifier = modifier
-                            .height(500.dp)
-                            .padding(16.dp)
-                    ){
-                        repeat(4){
-                            item{
-                                AllNewsShimmerAnimation()
+            viewModel.allNewsState.collectAsState(initial = UiState.Loading).value.let {
+                when (it) {
+                    is UiState.Loading -> {
+                        viewModel.fetchAllNews()
+                        LazyColumn(
+                            modifier = modifier
+                                .height(400.dp)
+                                .padding(16.dp)
+                        ) {
+                            repeat(4) {
+                                item {
+                                    AllNewsShimmerAnimation()
+                                }
                             }
                         }
                     }
-                }
-                is UiState.Empty -> {
-                    EmptyView()
-                }
-                is UiState.Error -> {}
-                is UiState.Success -> {
-                    AllNewsSection(
-                        itemNews = it.data,
-                        onClickItem = onClickItem,
-                    )
+                    is UiState.Empty -> {
+                        EmptyView()
+                    }
+                    is UiState.Error -> {}
+                    is UiState.Success -> {
+                        AllNewsSection(
+                            itemNews = it.data,
+                            onClickItem = onClickItem,
+                        )
+                    }
                 }
             }
-        }
 
+
+        }
 
     }
+
 
 }
 
@@ -125,15 +128,14 @@ fun HeaderHome(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 16.dp)
-            .clickable {
-                goToSearch()
-            }
-    ){
+            .padding(horizontal = 16.dp)
+    ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(60.dp)
         ) {
             Text(
                 text = "Hello Beranju ",
@@ -144,13 +146,12 @@ fun HeaderHome(
             )
             IconButton(onClick = {}) {
                 Icon(
-                    imageVector = Icons.Rounded.Favorite, 
+                    imageVector = Icons.Rounded.Favorite,
                     contentDescription = null,
                     tint = Color.Red
                 )
             }
         }
-        Spacer(modifier = Modifier.height(10.dp))
         OutlinedTextField(
             value = "",
             enabled = false,
@@ -164,7 +165,9 @@ fun HeaderHome(
             leadingIcon = {
                 Icon(imageVector = Icons.Default.Search, contentDescription = null)
             },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable { goToSearch() }
         )
     }
 }
@@ -186,8 +189,8 @@ fun AllNewsSection(
             modifier = Modifier
                 .padding(bottom = 16.dp)
         )
-        LazyColumn{
-            items(itemNews){news->
+        LazyColumn {
+            items(itemNews) { news ->
                 AllNewsItem(
                     image = news.urlToImage.toString(),
                     title = news.title ?: stringResource(R.string.text_unknown),
@@ -212,10 +215,10 @@ fun HeadLineSection(
 ) {
     LazyRow(
         modifier = modifier
-            .height(260.dp)
+            .height(300.dp)
             .padding(start = 16.dp, top = 16.dp)
     ) {
-        items(itemNews!!){news->
+        items(itemNews!!) { news ->
             HeadlineNewsItem(
                 image = news.urlToImage,
                 title = news.title ?: stringResource(R.string.text_unknown),

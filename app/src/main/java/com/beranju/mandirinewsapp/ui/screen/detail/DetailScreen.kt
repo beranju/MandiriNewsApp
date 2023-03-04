@@ -42,10 +42,10 @@ fun DetailScreen(
     viewModel: DetailViewModel = koinViewModel(),
     modifier: Modifier = Modifier
 ) {
+    // ** this side efect use to run the function in intial composition
     LaunchedEffect(Unit){
         viewModel.isFavoriteNews(data.publishedAt)
     }
-//    viewModel.isFavoriteNews(data.id)
     val state = viewModel.uiState.collectAsState(initial = false)
 
     Column(
